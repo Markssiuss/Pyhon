@@ -1,2 +1,2 @@
 # Pyhon
-Learning python
+Learning python doing small apps
