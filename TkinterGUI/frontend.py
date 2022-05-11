@@ -1,21 +1,21 @@
 
 from tkinter import *
 from tkinter import messagebox
-import backend
+from backend import Database
 
 def view_command():
     booksList.delete(0,END)
-    for row in backend.view():
+    for row in database.view():
         booksList.insert(END, row)
 
 def search_command():
     booksList.delete(0,END)
-    for row in backend.search(titleTextBlock.get(), authorTextBlock.get(), yearTextBlock.get(), isbnTextBlock.get()):
+    for row in database.search(titleTextBlock.get(), authorTextBlock.get(), yearTextBlock.get(), isbnTextBlock.get()):
         booksList.insert(END, row)
 
 def insert_command():
     if (titleTextBlock.get() != '') & (authorTextBlock.get() != '') & (yearTextBlock.get() != '') & (isbnTextBlock.get() != ''):
-        backend.insert(titleTextBlock.get(), authorTextBlock.get(), yearTextBlock.get(), isbnTextBlock.get())
+        database.insert(titleTextBlock.get(), authorTextBlock.get(), yearTextBlock.get(), isbnTextBlock.get())
         messagebox.showinfo(title = "Added", message = "Book added succesfully!!")
     else:
         messagebox.showerror(title = "Error", message = "Not all the fields have values")
@@ -33,18 +33,18 @@ def get_selected_row(event):
     isbnTextBlock.insert(END, selected_tuple[4])
 
 def delete_command():
-    backend.delete(selected_tuple[0])
+    database.delete(selected_tuple[0])
     view_command()
 
 def update_command():
     if (titleTextBlock.get() != '') & (authorTextBlock.get() != '') & (yearTextBlock.get() != '') & (isbnTextBlock.get() != ''):
-        backend.update(selected_tuple[0], titleTextBlock.get(), authorTextBlock.get(), yearTextBlock.get(), isbnTextBlock.get())
+        database.update(selected_tuple[0], titleTextBlock.get(), authorTextBlock.get(), yearTextBlock.get(), isbnTextBlock.get())
     view_command()
 
 mainWindow = Tk()
 mainWindow.title("BookStore")
 
-backend.create()
+database = Database("TkinterGUI\\books.db")
 
 titleLabel = Label(mainWindow, text="Title")
 titleLabel.grid(column=0, row=0)

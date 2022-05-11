@@ -1,45 +1,35 @@
 
 import sqlite3 as sq3
-def create():
-    conn = sq3.connect("TkinterGUI\\books.db")
-    cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS bookstore (Id INTEGER PRIMARY KEY, Title TEXT, Author TEXT, Year INTEGER, Isbn INTEGER)")
-    conn.commit()
-    conn.close()
 
-def insert(title, author, year, isbn):
-    conn = sq3.connect("TkinterGUI\\books.db")
-    cur = conn.cursor()
-    cur.execute("INSERT INTO bookstore VALUES (NULL, ?, ?, ?, ?)", (title, author, year, isbn))
-    conn.commit()
-    conn.close()
+class Database:
 
-def view():
-    conn = sq3.connect("TkinterGUI\\books.db")
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM bookstore")
-    rows = cur.fetchall()
-    conn.close()
-    return rows
+    def __init__(self, db):
+        self.conn = sq3.connect(db)
+        self.cur = self.conn.cursor()
+        self.cur.execute("CREATE TABLE IF NOT EXISTS bookstore (Id INTEGER PRIMARY KEY, Title TEXT, Author TEXT, Year INTEGER, Isbn INTEGER)")
+        self.conn.commit()
 
-def search(title="", author="", year="", isbn=""):
-    conn = sq3.connect("TkinterGUI\\books.db")
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM bookstore WHERE Title=? OR Author=? OR Year=? OR Isbn=?", (title, author, year, isbn))
-    rows = cur.fetchall()
-    conn.close()
-    return rows
+    def __del__(self):
+        self.conn.close()
 
-def delete(id):
-    conn = sq3.connect("TkinterGUI\\books.db")
-    cur = conn.cursor()
-    cur.execute("DELETE FROM bookstore WHERE Id=?", (id,))
-    conn.commit()
-    conn.close()
+    def insert(self, title, author, year, isbn):
+        self.cur.execute("INSERT INTO bookstore VALUES (NULL, ?, ?, ?, ?)", (title, author, year, isbn))
+        self.conn.commit()
 
-def update(id,title, author, year, isbn):
-    conn = sq3.connect("TkinterGUI\\books.db")
-    cur = conn.cursor()
-    cur.execute("UPDATE bookstore SET Title=? , Author=? , Year=? , Isbn=? WHERE Id=?", (title, author, year, isbn, id))
-    conn.commit()
-    conn.close()
+    def view(self):
+        self.cur.execute("SELECT * FROM bookstore")
+        rows = self.cur.fetchall()
+        return rows
+
+    def search(self, title="", author="", year="", isbn=""):
+        self.cur.execute("SELECT * FROM bookstore WHERE Title=? OR Author=? OR Year=? OR Isbn=?", (title, author, year, isbn))
+        rows = self.cur.fetchall()
+        return rows
+
+    def delete(self, id):
+        self.cur.execute("DELETE FROM bookstore WHERE Id=?", (id,))
+        self.conn.commit()
+
+    def update(self, id,title, author, year, isbn):
+        self.cur.execute("UPDATE bookstore SET Title=? , Author=? , Year=? , Isbn=? WHERE Id=?", (title, author, year, isbn, id))
+        self.conn.commit()
