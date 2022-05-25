@@ -128,5 +128,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Generated files
 TkinterGUI/books.db
+FinancialGraph/Graph.html
+
+# Local folder
 Testing/
