@@ -131,7 +131,9 @@ dmypy.json
 
 # Generated files
 TkinterGUI/books.db
+DataCollectorWebApp/Height.db
 FinancialGraph/Graph.html
 
 # Local folder
 Testing/
+
